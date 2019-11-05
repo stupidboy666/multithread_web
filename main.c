@@ -98,11 +98,13 @@ void deal_with_request(struct arg_struc* argument) {
         fread(file_content, sizeof(char), 1024, file);
         send(new_socket , file_content , strlen(file_content) , 0 );
         printf("request file name: %s\n",file_name);
+        close(new_socket);
     } else {
         file = fopen("Not_found.html", "rb");
         fread(file_content, sizeof(char), 1024, file);
         send(new_socket , file_content, strlen(file_content) , 0 );
         printf("request file name: %s\n",file_name);
         printf("the file not found\n");
+        close(new_socket);
     }
 }
