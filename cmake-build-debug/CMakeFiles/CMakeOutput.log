@@ -203,3 +203,31 @@ Parsed C implicit link information from above output:
   implicit fwks: []
 
 
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/lyhhhhh/CLionProjects/algorithm_1/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_32588/fast && /usr/bin/make -f CMakeFiles/cmTC_32588.dir/build.make CMakeFiles/cmTC_32588.dir/build
+make[1]: 进入目录“/home/lyhhhhh/CLionProjects/algorithm_1/cmake-build-debug/CMakeFiles/CMakeTmp”
+Building C object CMakeFiles/cmTC_32588.dir/CheckIncludeFile.c.o
+/usr/bin/cc   -std=gnu99 -o CMakeFiles/cmTC_32588.dir/CheckIncludeFile.c.o   -c /home/lyhhhhh/CLionProjects/algorithm_1/cmake-build-debug/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_32588
+/usr/local/cmake-3.16.0-rc1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_32588.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_32588.dir/CheckIncludeFile.c.o  -o cmTC_32588 
+make[1]: 离开目录“/home/lyhhhhh/CLionProjects/algorithm_1/cmake-build-debug/CMakeFiles/CMakeTmp”
+
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/lyhhhhh/CLionProjects/algorithm_1/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_09e9a/fast && /usr/bin/make -f CMakeFiles/cmTC_09e9a.dir/build.make CMakeFiles/cmTC_09e9a.dir/build
+make[1]: 进入目录“/home/lyhhhhh/CLionProjects/algorithm_1/cmake-build-debug/CMakeFiles/CMakeTmp”
+Building C object CMakeFiles/cmTC_09e9a.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -std=gnu99 -o CMakeFiles/cmTC_09e9a.dir/CheckFunctionExists.c.o   -c /usr/local/cmake-3.16.0-rc1/Modules/CheckFunctionExists.c
+Linking C executable cmTC_09e9a
+/usr/local/cmake-3.16.0-rc1/bin/cmake -E cmake_link_script CMakeFiles/cmTC_09e9a.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_09e9a.dir/CheckFunctionExists.c.o  -o cmTC_09e9a  -lpthread 
+make[1]: 离开目录“/home/lyhhhhh/CLionProjects/algorithm_1/cmake-build-debug/CMakeFiles/CMakeTmp”
+
+
+

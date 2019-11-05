@@ -4,9 +4,16 @@
 #include <stdlib.h>
 #include <netinet/in.h>
 #include <string.h>
+#include <pthread.h>
 #define PORT 8080
 
+struct arg_struc {
+    char* arg1;
+    int arg2;
+};
+
 char* getrequest(char* buf);// parse the request and get the file name we want.
+void deal_with_request(struct arg_struc* argument);
 
 int main(int argc, char const *argv[])
 {
@@ -15,8 +22,9 @@ int main(int argc, char const *argv[])
     int opt = 1;
     int addrlen = sizeof(address);
     char buffer[1024] = {0};
-    char *file_name = NULL;
-    char file_content[1024] = {0};
+    pthread_t id;
+//    char *file_name = NULL;
+//    char file_content[1024] = {0};
 
     // Creating socket file descriptor
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
@@ -45,30 +53,17 @@ int main(int argc, char const *argv[])
     }
     if (listen(server_fd, 3) < 0)
     {
-        perror("listen");
+        perror("listen failed");
         exit(EXIT_FAILURE);
     }
-    if ((new_socket = accept(server_fd, (struct sockaddr *)&address,
-                             (socklen_t*)&addrlen))<0)
-    {
-        perror("accept");
-        exit(EXIT_FAILURE);
-    }
-    read( new_socket , buffer, 1024);
-    file_name = getrequest(buffer);
-    FILE* file = fopen(file_name,"rb");
-    if(file != NULL) {
-        fread(file_content, sizeof(char), 1024, file);
-        send(new_socket , file_content , strlen(file_content) , 0 );
-        fclose(file);
-        printf("request file name: %s\n",file_name);
-    } else {
-        file = fopen("Not_found.html", "rb");
-        fread(file_content, sizeof(char), 1024, file);
-        send(new_socket , file_content, strlen(file_content) , 0 );
-        fclose(file);
-        printf("request file name: %s\n",file_name);
-        printf("the file not found\n");
+    while ((new_socket = accept(server_fd, (struct sockaddr *)&address,
+                             (socklen_t*)&addrlen))>=0) {
+        read( new_socket , buffer, 1024);
+        struct arg_struc args;
+        args.arg1 = buffer;
+        args.arg2 = new_socket;
+        pthread_create(&id, NULL, (void*) deal_with_request, &args);
+        pthread_join(id, NULL);
     }
     return 0;
 }
@@ -90,4 +85,24 @@ char* getrequest(char* buf) {
         buf[j] = request[j];
     }
     return buf;
+}
+
+void deal_with_request(struct arg_struc* argument) {
+    char* buffer = argument->arg1;
+    int new_socket = argument->arg2;
+    char *file_name = NULL;
+    char file_content[1024] = {0};
+    file_name = getrequest(buffer);
+    FILE* file = fopen(file_name,"rb");
+    if(file != NULL) {
+        fread(file_content, sizeof(char), 1024, file);
+        send(new_socket , file_content , strlen(file_content) , 0 );
+        printf("request file name: %s\n",file_name);
+    } else {
+        file = fopen("Not_found.html", "rb");
+        fread(file_content, sizeof(char), 1024, file);
+        send(new_socket , file_content, strlen(file_content) , 0 );
+        printf("request file name: %s\n",file_name);
+        printf("the file not found\n");
+    }
 }
